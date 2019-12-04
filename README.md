@@ -1,2 +1,2 @@
 # EJ2-DataGrid-Core-Single-Click-Edit
-Enable editing for the grid cell in a single click
+Enable Editing for a grid in a single click and also enable editing for the paricular cell which was selected.
