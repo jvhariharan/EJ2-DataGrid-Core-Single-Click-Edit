@@ -1,0 +1,55 @@
+﻿<ejs-grid id="Grid" dataSource="@ViewBag.DataSource" height="273" load="load" actionComplete="actionComplete" allowPaging="true" toolbar="@(new List<string>() { "Add", "Edit", "Delete", "Cancel", "Update" })">
+    <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true"></e-grid-editSettings>
+    <e-grid-columns>
+        <e-grid-column field="Verified" headerText="Verified" editType="booleanedit" displayAsCheckBox="true" textAlign="Center" type="boolean"></e-grid-column>
+        <e-grid-column field="OrderID" headerText="Order ID" isPrimaryKey="true" editType="numericedit" textAlign="Center"></e-grid-column>
+        <e-grid-column field="CustomerID" headerText="Customer ID" type="string" textAlign="Center"></e-grid-column>
+        <e-grid-column field="Freight" headerText="Freight" editType="numericedit" textAlign="Center"></e-grid-column>
+        <e-grid-column field="ShipCountry" headerText="Ship Country" textAlign="Center"></e-grid-column>
+    </e-grid-columns>
+</ejs-grid>
+<script>
+    var data;
+    var row;
+    var col;
+    var foc;
+    var isVerifiedColumn = false;
+    function load(args) {
+        var instance = document.getElementById('Grid').ej2_instances[0];
+        instance.element.addEventListener('mousedown', function (e) {
+            data = e.target;
+            debugger
+            row = data.getAttribute("index");
+            col = data.getAttribute("aria-colindex");
+            isVerifiedColumn = e.target.getAttribute('aria-colindex') === "0" ? true : false;
+            if (e.target.classList.contains("e-rowcell")) {
+                if (instance.isEdit)
+                    instance.endEdit();
+                var index = parseInt(e.target.getAttribute("Index"));
+                instance.selectRow(index);
+                instance.startEdit();
+            };
+        });
+    }
+
+    function actionComplete(args) {
+        var grid = document.getElementById("Grid").ej2_instances[0];
+        if (args.requestType == "beginEdit") {
+            debugger
+            foc = args.form.querySelector("#Grid" + grid.columns[col].field);
+            debugger
+            //foc.focus();
+            setTimeout("foc.focus()", 10);
+            if (isVerifiedColumn) {
+                if (args.rowData.Verified == false) {
+                    args.form.querySelector('.e-checkbox').ej2_instances[0].checked = true;
+                }
+
+                else {
+                    args.form.querySelector('.e-checkbox').ej2_instances[0].checked = false;
+                }
+            }
+        }
+    }
+</script>
+
